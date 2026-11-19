@@ -1,8 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -23,21 +21,15 @@ def register(request):
             error = 'Введите имя пользователя.'
         elif password != password2:
             error = 'Пароли не совпадают.'
+        elif CustomUser.objects.filter(username=username).exists():
+            error = 'Это имя пользователя уже занято.'
         else:
-            try:
-                validate_password(password, user=CustomUser(username=username))
-            except ValidationError as exc:
-                error = ' '.join(exc.messages)
-            else:
-                if CustomUser.objects.filter(username=username).exists():
-                    error = 'Это имя пользователя уже занято.'
-                else:
-                    user = CustomUser.objects.create_user(
-                        username=username,
-                        password=password
-                    )
-                    login(request, user)
-                    return redirect('home')
+            user = CustomUser.objects.create_user(
+                username=username,
+                password=password
+            )
+            login(request, user)
+            return redirect('home')
         return render(request, 'register.html', {'error': error, 'username': username})
     return render(request, 'register.html')
 
