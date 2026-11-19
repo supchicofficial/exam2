@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="register">
+    <h1>РЕДАКТИРОВАТЬ ПРОФИЛЬ</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="phone">Телефон</label>
+        <input id="phone" type="tel" name="phone" value="{{ user.phone }}">
+        <label for="about">О себе</label>
+        <textarea id="about" name="about" rows="4">{{ user.about }}</textarea>
+        <label for="photo">Фото профиля</label>
+        <input id="photo" type="file" name="photo" accept="image/*">
+        <button type="submit">СОХРАНИТЬ</button>
+    </form>
+</div>
+{% endblock %}

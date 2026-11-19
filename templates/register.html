@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="register">
+    <h1>РЕГИСТРАЦИЯ</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Имя пользователя" value="{{ username }}" required>
+        <input type="password" name="password" placeholder="Пароль" required>
+        <input type="password" name="password2" placeholder="Повторите пароль" required>
+        <button type="submit">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+    </form>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</div>
+{% endblock %}

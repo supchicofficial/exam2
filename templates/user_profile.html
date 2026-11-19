@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="profile-card">
+    <div class="profile-top">
+        {% if profile_user.photo %}
+            <img src="{{ profile_user.photo.url }}" class="profile-photo" alt="Фото {{ profile_user.username }}">
+        {% else %}
+            <div class="profile-avatar">{{ profile_user.username|first|upper }}</div>
+        {% endif %}
+        <h1>{{ profile_user.username }}</h1>
+        <p>BLUE LOCK PLAYER</p>
+    </div>
+    <div class="profile-info">
+        <h2>ИНФОРМАЦИЯ ИГРОКА</h2>
+        <div class="profile-item">
+            <p>О себе</p>
+            <h3>{{ profile_user.about|default:"Не указано" }}</h3>
+        </div>
+        <div class="profile-item">
+            <p>На платформе с</p>
+            <h3>{{ profile_user.created_at|date:"d.m.Y" }}</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}

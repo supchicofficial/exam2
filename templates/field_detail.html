@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<article class="field-card field-detail">
+    {% if field.photo %}
+        <img src="{{ field.photo.url }}" alt="Фото поля {{ field.name }}">
+    {% endif %}
+    <div class="field-card-info">
+        <h1>{{ field.name }}</h1>
+        <p><strong>Адрес:</strong> {{ field.address }}</p>
+        <p><strong>Категория:</strong> {{ field.category.name }}</p>
+        <p>{{ field.description }}</p>
+        <h3>{{ field.price }} сомони</h3>
+        {% if field.is_free %}
+            <p class="field-free">Свободно</p>
+            <form method="POST" action="{% url 'book_field' field.id %}">
+                {% csrf_token %}
+                <label for="has_team">У вас есть команда?</label>
+                <select id="has_team" name="has_team" required>
+                    <option value="yes">Да</option>
+                    <option value="no">Нет, нужны игроки</option>
+                </select>
+                <label for="players_needed">Сколько игроков нужно?</label>
+                <input id="players_needed" type="number" name="players_needed" min="0" value="0">
+                <button type="submit">Забронировать</button>
+            </form>
+        {% else %}
+            <p class="field-busy">Поле занято</p>
+        {% endif %}
+    </div>
+</article>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="fields-page">
+    <h1>ИГРАЕМ ВМЕСТЕ</h1>
+    <p class="fields-description">Найдите команду, которой не хватает игроков.</p>
+    <div class="fields-list">
+        {% for booking in bookings %}
+            <article class="field-card">
+                <div class="field-card-info">
+                    <h2>{{ booking.field.name }}</h2>
+                    <p>Игрок: {{ booking.user.username }}</p>
+                    <p>Адрес: {{ booking.field.address }}</p>
+                    <p>Нужно игроков: {{ booking.players_needed }}</p>
+                    <p>Участники:
+                        {% for participant in booking.participants.all %}
+                            {{ participant.user.username }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            пока никто не присоединился
+                        {% endfor %}
+                    </p>
+                    {% if booking.user != user %}
+                        <form method="POST" action="{% url 'join_booking' booking.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Присоединиться</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </article>
+        {% empty %}
+            <p>Сейчас нет открытых игр.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

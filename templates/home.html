@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="home">
+    <h1>BLUE LOCK FOOTBALL ARENA</h1>
+    <h2>СТАНЬ ЛУЧШИМ ИГРОКОМ!</h2>
+    <p>
+        BLUE LOCK — платформа для аренды футбольных полей.
+        Бронируй площадку, собирай команду и побеждай!
+    </p>
+    <a class="button" href="{% url 'fields' %}">
+        ВЫБРАТЬ ПОЛЕ
+    </a>
+</div>
+<div class="about">
+    <h2>КАК ЭТО РАБОТАЕТ?</h2>
+    <div class="about-cards">
+        <div class="about-card">
+            <h3>01. Выбери поле</h3>
+            <p>Посмотри доступные футбольные площадки и выбери подходящую.</p>
+        </div>
+        <div class="about-card">
+            <h3>02. Забронируй</h3>
+            <p>Оформи бронирование и укажи, есть ли у тебя команда.</p>
+        </div>
+        <div class="about-card">
+            <h3>03. Собери команду</h3>
+            <p>Если игроков не хватает, найди участников через совместную игру.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

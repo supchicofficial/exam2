@@ -2,9 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
+    phone = models.CharField(max_length=20, blank=True)
+    about = models.TextField(blank=True)
     photo = models.ImageField(blank=True, null=True, upload_to="profiles/")
     created_at = models.DateTimeField(auto_now_add=True)
-
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -19,7 +20,7 @@ class Field(models.Model):
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="fields")
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to="fields/", blank=True, null=True)
     is_free = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)

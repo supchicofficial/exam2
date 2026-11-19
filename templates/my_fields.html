@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="fields-page">
+    <h1>МОИ БРОНИРОВАНИЯ</h1>
+    <div class="fields-list">
+        {% for booking in bookings %}
+            <article class="field-card">
+                <div class="field-card-info">
+                    <h2><a href="{% url 'field_detail' booking.field.id %}">{{ booking.field.name }}</a></h2>
+                    <p>{{ booking.field.address }}</p>
+                    <p>Статус: {{ booking.status }}</p>
+                    <p>{% if booking.has_team %}Команда собрана{% else %}Нужны игроки: {{ booking.players_needed }}{% endif %}</p>
+                    {% if booking.status == 'active' %}
+                        <form method="POST" action="{% url 'cancel_booking' booking.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Отменить бронирование</button>
+                        </form>
+                        <form method="POST" action="{% url 'finish_booking' booking.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Завершить игру</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </article>
+        {% empty %}
+            <p>У вас пока нет бронирований.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

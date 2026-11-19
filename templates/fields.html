@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="fields-page">
+    <h1>ФУТБОЛЬНЫЕ ПОЛЯ</h1>
+    <p class="fields-description">Выбери площадку для своей следующей игры</p>
+    <form method="GET" class="fields-search">
+        <input type="search" name="search" placeholder="Название или адрес поля" value="{{ search }}" aria-label="Поиск поля">
+        <select name="category" aria-label="Категория поля">
+            <option value="">Все категории</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}"{% if selected_category == category.id|stringformat:"s" %} selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Найти</button>
+    </form>
+    <div class="fields-list">
+        {% for field in fields %}
+            <article class="field-card">
+                {% if field.photo %}
+                    <img src="{{ field.photo.url }}" alt="{{ field.name }}">
+                {% else %}
+                    <div class="no-photo">ФОТО НЕТ</div>
+                {% endif %}
+                <div class="field-card-info">
+                    <h2>{{ field.name }}</h2>
+                    <p>Адрес: {{ field.address }}</p>
+                    <p>Категория: {{ field.category.name }}</p>
+                    <h3>{{ field.price }} сомони</h3>
+                    {% if field.is_free %}
+                        <p class="field-free">СВОБОДНО</p>
+                    {% else %}
+                        <p class="field-busy">ЗАНЯТО</p>
+                    {% endif %}
+                    <a href="{% url 'field_detail' field.id %}"> ПОДРОБНЕЕ</a>
+                </div>
+            </article>
+        {% empty %}
+            <p>Полей по вашему запросу не найдено.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

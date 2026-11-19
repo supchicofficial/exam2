@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="profile-card">
+    <div class="profile-top">
+        {% if user.photo %}
+            <img src="{{ user.photo.url }}" class="profile-photo">
+        {% else %}
+            <div class="profile-avatar">
+                {{ user.username|first|upper }}
+            </div>
+        {% endif %}
+        <h1>{{ user.username }}</h1>
+        <p>BLUE LOCK PLAYER</p>
+        <div class="player-level">
+            PLAYER PROFILE
+        </div>
+    </div>
+    <div class="profile-info">
+        <h2>ИНФОРМАЦИЯ ИГРОКА</h2>
+        <div class="profile-item">
+            <p>Имя пользователя</p>
+            <h3>{{ user.username }}</h3>
+        </div>
+        <div class="profile-item">
+            <p>Имя</p>
+            <h3>{{ user.first_name|default:"Не указано" }}</h3>
+        </div>
+        <div class="profile-item">
+            <p>Фамилия</p>
+            <h3>{{ user.last_name|default:"Не указана" }}</h3>
+        </div>
+        <div class="profile-item">
+            <p>Email</p>
+            <h3>{{ user.email|default:"Не указан" }}</h3>
+        </div>
+        <div class="profile-item">
+            <p>Телефон</p>
+            <h3>{{ user.phone|default:"Не указан" }}</h3>
+        </div>
+        <div class="profile-item">
+            <p>О себе</p>
+            <h3>{{ user.about|default:"Не указано" }}</h3>
+        </div>
+        <div class="profile-item">
+            <p>Дата регистрации</p>
+            <h3>{{ user.created_at|date:"d.m.Y" }}</h3>
+        </div>
+    </div>
+    <div class="profile-buttons">
+        <a href="{% url 'profile_edit' %}">РЕДАКТИРОВАТЬ ПРОФИЛЬ</a>
+        <a href="{% url 'home' %}">НА ГЛАВНУЮ</a>
+    </div>
+</div>
+{% endblock %}

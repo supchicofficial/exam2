@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>BLUE LOCK</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="menu">
+        <h1>BLUE LOCK</h1>
+        <div class="menu-links">
+            <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'fields' %}">Поля</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Мой профиль</a>
+                <a href="{% url 'my_fields' %}">Мои бронирования</a>
+                <a href="{% url 'play_together' %}">Играем вместе</a>
+                <form method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'register' %}">Регистрация</a>
+                <a href="{% url 'login' %}">Войти</a>
+            {% endif %}
+        </div>
+    </div>
+    <main class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <p class="notice">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
