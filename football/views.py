@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -86,20 +85,26 @@ def book_field(request, pk):
         field = get_object_or_404(
             Field.objects.select_for_update(),id=pk,is_active=True)
         if not field.is_free:
-            messages.error(request, 'Это поле уже занято.')
-            return redirect('field_detail', pk=pk)
+            return render(
+                request,
+                'field_detail.html',
+                {'field': field, 'error': 'Это поле уже занято.'},
+                status=409
+            )
         team = request.POST.get('has_team')
         if team not in ('yes', 'no'):
-            messages.error(request, 'Укажите, есть ли у вас команда.')
-            return redirect('field_detail', pk=pk)
+            return render(
+                request,
+                'field_detail.html',
+                {'field': field, 'error': 'Укажите, есть ли у вас команда.'},
+                status=400
+            )
         try:
             players = int(request.POST.get('players_needed', '0'))
         except (TypeError, ValueError):
-            messages.error(request, 'Количество игроков должно быть числом.')
-            return redirect('field_detail', pk=pk)
+            return render(request,'field_detail.html',{'field': field, 'error': 'Количество игроков должно быть числом.'},status=400)
         if players < 0:
-            messages.error(request, 'Количество игроков не может быть отрицательным.')
-            return redirect('field_detail', pk=pk)
+            return render(request,'field_detail.html',{'field': field, 'error': 'Количество игроков не может быть отрицательным.'},status=400)
         if team == 'yes':
             players = 0
         Booking.objects.create(user=request.user,field=field,has_team=team == 'yes',players_needed=players,status='active')

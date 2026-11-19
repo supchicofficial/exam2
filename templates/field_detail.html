@@ -5,6 +5,9 @@
         <img src="{{ field.photo.url }}" alt="Фото поля {{ field.name }}">
     {% endif %}
     <div class="field-card-info">
+        {% if error %}
+            <p class="field-busy">{{ error }}</p>
+        {% endif %}
         <h1>{{ field.name }}</h1>
         <p><strong>Адрес:</strong> {{ field.address }}</p>
         <p><strong>Категория:</strong> {{ field.category.name }}</p>
